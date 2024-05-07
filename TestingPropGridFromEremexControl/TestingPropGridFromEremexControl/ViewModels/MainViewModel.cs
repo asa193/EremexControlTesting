@@ -29,8 +29,10 @@ namespace TestingPropGridFromEremexControl.ViewModels {
         List<ManWithObser> listOfObser = new List<ManWithObser>();
         List<ManWithoutObser> listOfWithoutObser = new List<ManWithoutObser>();
 
+        const int countOfObjects = 5000;
+
         public MainViewModel() {
-            for (int i = 0; i < 5000; i++) {
+            for (int i = 0; i < countOfObjects; i++) {
                 listOfObser.Add(new ManWithObser() { HaveName = true, Name = "With obs" });
                 listOfWithoutObser.Add(new ManWithoutObser() { HaveName = true, Name = "Without obs" });
             }
@@ -56,9 +58,7 @@ namespace TestingPropGridFromEremexControl.ViewModels {
         }
 
         partial void OnTestingNameChanged(string value) {
-            if (SelectedObjects.Length < 1)
-                return;
-            switch (SelectedObjects[0]) {
+            switch (SelectedObjects?[0]) {
                 case ManWithObser man:
                     man.Name = value;
                     break;
