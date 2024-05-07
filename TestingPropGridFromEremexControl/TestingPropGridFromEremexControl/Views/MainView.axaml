@@ -1,0 +1,63 @@
+<UserControl
+    x:Class="TestingPropGridFromEremexControl.Views.MainView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:TestingPropGridFromEremexControl.ViewModels"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mxc="clr-namespace:Eremex.AvaloniaUI.Controls.Common;assembly=Eremex.Avalonia.Controls"
+    xmlns:mxe="clr-namespace:Eremex.AvaloniaUI.Controls.Editors;assembly=Eremex.Avalonia.Controls"
+    xmlns:mxpg="clr-namespace:Eremex.AvaloniaUI.Controls.PropertyGrid;assembly=Eremex.Avalonia.Controls"
+    xmlns:vm="clr-namespace:TestingPropGridFromEremexControl.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:MainViewModel"
+    mc:Ignorable="d">
+
+
+    <Grid ColumnDefinitions="*, *, *">
+        <Border Grid.ColumnSpan="3" Background="{DynamicResource Fill/Neutral/Secondary/Enabled}" />
+        <StackPanel Grid.Column="0">
+            <TextBlock Text="Place for Name:" />
+            <TextBox Text="{Binding TestingName}" />
+        </StackPanel>
+        <mxpg:PropertyGridControl
+            x:Name="propertyGrid"
+            Grid.Column="1"
+            Margin="16"
+            Background="{DynamicResource Fill/Neutral/Primary/Enabled}"
+            BorderThickness="1"
+            RowsSource="{Binding MyRowSource}"
+            SelectedObjects="{Binding SelectedObjects}"
+            UseModernAppearance="True">
+            <mxpg:PropertyGridControl.RowsDataTemplates>
+                <DataTemplates>
+                    <DataTemplate DataType="local:CategoryRowViewModel">
+                        <mxpg:PropertyGridCategoryRow Caption="{Binding Path=Caption}" RowsSource="{Binding Path=Items}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="local:DefaultRowViewModel">
+                        <mxpg:PropertyGridRow
+                            Caption="{Binding Path=Caption}"
+                            FieldName="{Binding Path=FieldName}"
+                            ReadOnly="{Binding Path=ReadOnly}" />
+                    </DataTemplate>
+                </DataTemplates>
+            </mxpg:PropertyGridControl.RowsDataTemplates>
+        </mxpg:PropertyGridControl>
+        <Border
+            Grid.Column="3"
+            BorderBrush="{DynamicResource Outline/Neutral/Transparent/Medium}"
+            BorderThickness="1,0">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="current name: " />
+                    <TextBlock Text="{Binding CurrentName}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="current readonly: " />
+                    <TextBlock Text="{Binding CurrentReadOnly}" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
