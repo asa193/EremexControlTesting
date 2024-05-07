@@ -20,6 +20,7 @@
         <StackPanel Grid.Column="0">
             <TextBlock Text="Place for Name:" />
             <TextBox Text="{Binding TestingName}" />
+            <CheckBox Content="Observable object" IsChecked="{Binding UseObservableObject}" />
         </StackPanel>
         <mxpg:PropertyGridControl
             x:Name="propertyGrid"

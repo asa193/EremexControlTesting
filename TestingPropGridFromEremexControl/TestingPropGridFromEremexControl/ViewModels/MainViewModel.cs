@@ -1,12 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
+using System.ComponentModel;
 using System.Reflection;
 using System.Threading;
 using TestingPropGridFromEremexControl.Model;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace TestingPropGridFromEremexControl.ViewModels {
     partial class MainViewModel : ViewModelBase {
@@ -22,14 +23,19 @@ namespace TestingPropGridFromEremexControl.ViewModels {
         [ObservableProperty]
         object[] selectedObjects = [];
 
+        [ObservableProperty]
+        bool useObservableObject;
+
+        List<ManWithObser> listOfObser = new List<ManWithObser>();
+        List<ManWithoutObser> listOfWithoutObser = new List<ManWithoutObser>();
+
         public MainViewModel() {
-            List<object> list = new List<object>();
-            while (list.Count < 1000) {
-                list.Add(new ManWithObser() { HaveName = true, Name = "With obs" });
-                //list.Add(new ManWithoutObser() { HaveName = true, Name = "Without obs" });
+            for (int i = 0; i < 5000; i++) {
+                listOfObser.Add(new ManWithObser() { HaveName = true, Name = "With obs" });
+                listOfWithoutObser.Add(new ManWithoutObser() { HaveName = true, Name = "Without obs" });
             }
-            
-            SelectedObjects = list.ToArray();
+
+            OnUseObservableObjectChanged(useObservableObject);
 
             //Поток чтобы точно проверить что меняются свойства, не зависимо Observable или нет.
             Thread b = new Thread(Timer);
@@ -37,7 +43,21 @@ namespace TestingPropGridFromEremexControl.ViewModels {
             b.Start();
         }
 
+        partial void OnUseObservableObjectChanged(bool value) {
+            object[] newSelectedObjects;
+            if (value)
+                newSelectedObjects = listOfObser.ToArray();
+            else
+                newSelectedObjects = listOfWithoutObser.ToArray();
+
+            SelectedObjects = null;
+            MyRowSource = GetMyRowSource(newSelectedObjects);
+            SelectedObjects = newSelectedObjects;
+        }
+
         partial void OnTestingNameChanged(string value) {
+            if (SelectedObjects.Length < 1)
+                return;
             switch (SelectedObjects[0]) {
                 case ManWithObser man:
                     man.Name = value;
@@ -49,8 +69,8 @@ namespace TestingPropGridFromEremexControl.ViewModels {
         }
 
         private void Timer() {
-            while(true) {
-                switch (SelectedObjects[0]) {
+            while (true) {
+                switch (SelectedObjects?[0]) {
                     case ManWithObser man:
                         CurrentName = man.Name;
                         CurrentReadOnly = man.HaveName;
@@ -64,11 +84,14 @@ namespace TestingPropGridFromEremexControl.ViewModels {
             }
         }
 
-        public IEnumerable MyRowSource { get => GetMyRowSource(); }
+        [ObservableProperty]
+        public IEnumerable myRowSource;
 
-        public IEnumerable GetMyRowSource() {
-            if (SelectedObjects.Length == 0)
-                return new List<object>();
+
+
+        public IEnumerable GetMyRowSource(IEnumerable<object> SelectedObjects) {
+            if (SelectedObjects.Count() < 1)
+                return null;
 
             var firstObject = SelectedObjects.First();
             List<PropertyInfo> myProperties = [.. firstObject.GetType().GetProperties()];
