@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace TestingPropGridFromEremexControl.Model {
     partial class ManWithObser : ObservableObject {
+        public ManWithObser() {
+            mainBrainNeed = new HumanNeeds() { SleepNeed = 8, SunNeed = 2 };
+        }
+
         [ObservableProperty]
         [property:AllowedByProp(Inverse =false, PropName =nameof(HaveName))]
         [property:DisplayName("Имя")]
@@ -18,6 +22,9 @@ namespace TestingPropGridFromEremexControl.Model {
 
         [ObservableProperty]
         public string emptyBox;
+
+        [ObservableProperty]
+        public HumanNeeds mainBrainNeed;
     }
 
     public class ManWithoutObser {

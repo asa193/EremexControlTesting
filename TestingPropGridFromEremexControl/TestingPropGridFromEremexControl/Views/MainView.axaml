@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:TestingPropGridFromEremexControl.ViewModels"
+    xmlns:m="clr-namespace:TestingPropGridFromEremexControl.Model"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mxc="clr-namespace:Eremex.AvaloniaUI.Controls.Common;assembly=Eremex.Avalonia.Controls"
     xmlns:mxe="clr-namespace:Eremex.AvaloniaUI.Controls.Editors;assembly=Eremex.Avalonia.Controls"
@@ -14,6 +15,20 @@
     x:DataType="vm:MainViewModel"
     mc:Ignorable="d">
 
+    <UserControl.Resources>
+        <DataTemplate x:Key="humanNeedsEditor" x:CompileBindings="False">
+            <StackPanel Orientation="Vertical">
+                <TextBox
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="{Binding Value.SleepNeed}" />
+                <TextBox
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="{Binding Value.SunNeed}" />
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
 
     <Grid ColumnDefinitions="*, *, *">
         <Border Grid.ColumnSpan="3" Background="{DynamicResource Fill/Neutral/Secondary/Enabled}" />
@@ -26,6 +41,7 @@
             x:Name="propertyGrid"
             Grid.Column="1"
             Margin="16"
+            AutoGenerateRows="False"
             Background="{DynamicResource Fill/Neutral/Primary/Enabled}"
             BorderThickness="1"
             RowsSource="{Binding MyRowSource}"
@@ -41,6 +57,9 @@
                             Caption="{Binding Path=Caption}"
                             FieldName="{Binding Path=FieldName}"
                             ReadOnly="{Binding Path=ReadOnly}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="local:HumanNeedsRowViewModel">
+                        <mxpg:PropertyGridRow FieldName="{Binding Path=FieldName}" RowTemplate="{DynamicResource ResourceKey=humanNeedsEditor}" />
                     </DataTemplate>
                 </DataTemplates>
             </mxpg:PropertyGridControl.RowsDataTemplates>

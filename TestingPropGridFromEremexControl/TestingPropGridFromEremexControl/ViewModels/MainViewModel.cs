@@ -29,7 +29,7 @@ namespace TestingPropGridFromEremexControl.ViewModels {
         List<ManWithObser> listOfObser = new List<ManWithObser>();
         List<ManWithoutObser> listOfWithoutObser = new List<ManWithoutObser>();
 
-        const int countOfObjects = 5000;
+        const int countOfObjects = 5;
 
         public MainViewModel() {
             for (int i = 0; i < countOfObjects; i++) {
@@ -103,20 +103,29 @@ namespace TestingPropGridFromEremexControl.ViewModels {
 
             var list = new List<object>();
             foreach (var p in myProperties) {
+                if(p.PropertyType == typeof(HumanNeeds)) {
+                    list.Add(new HumanNeedsRowViewModel() { FieldName = p.Name });
+                    continue;
+                }
                 string? DisplayName = p.GetCustomAttributes(typeof(DisplayNameAttribute)).Cast<DisplayNameAttribute>().FirstOrDefault()?.DisplayName;
                 if (DisplayName == null)
                     DisplayName = p.Name;
 
                 var Allowed = p.GetCustomAttributes(typeof(AllowedByProp)).Cast<AllowedByProp>().FirstOrDefault();
 
-                if(Allowed == null)
+                if (Allowed == null)
                     list.Add(new DefaultRowViewModel(null, null) { FieldName = p.Name, Caption = DisplayName, ReadOnly = false });
                 else
-                    list.Add(new DefaultRowViewModel(firstObject as ObservableObject, myProperties.Find(p => p.Name == Allowed.PropName)) 
-                    { FieldName = p.Name, Caption = DisplayName });
+                    list.Add(new DefaultRowViewModel(firstObject as ObservableObject, myProperties.Find(p => p.Name == Allowed.PropName)) { FieldName = p.Name, Caption = DisplayName });
             }
             return list;
         }
+    }
+
+    public class HumanNeedsRowViewModel {
+        // The category's display name.
+        public string FieldName { get; set; }
+
     }
 
     public class CategoryRowViewModel {
