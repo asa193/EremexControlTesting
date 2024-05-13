@@ -1,9 +1,11 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestingPropGridFromEremexControl.Model;
 
 namespace TestingPropGridFromEremexControl.ViewModels.CustomProperties {
     public class MyPropertyDescriptor : PropertyDescriptor {
@@ -45,10 +47,13 @@ namespace TestingPropGridFromEremexControl.ViewModels.CustomProperties {
         }
 
         public override void SetValue(object? component, object? value) {
+            var objectForSetValue = component;
             foreach (var p in _pathToProperty) {
-                component = p.GetValue(component);
+                objectForSetValue = p.GetValue(component);
             }
-            _p.SetValue(component,value);
+            _p.SetValue(objectForSetValue, value);
+            if (component is IForNotify notify)
+                notify.ForceOnPropChange(Name);
         }
 
         public override bool ShouldSerializeValue(object component) {

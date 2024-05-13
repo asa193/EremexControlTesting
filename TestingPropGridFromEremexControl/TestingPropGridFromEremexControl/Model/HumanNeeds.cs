@@ -12,5 +12,7 @@ namespace TestingPropGridFromEremexControl.Model {
 
         [ObservableProperty]
         float sunNeed;
+
+
     }
 }

@@ -9,8 +9,12 @@ using TestingPropGridFromEremexControl.ViewModels.CustomProperties;
 
 namespace TestingPropGridFromEremexControl.Model {
 
+    public interface IForNotify {
+        void ForceOnPropChange(string  propertyName);
+    }
+
     [TypeDescriptionProvider(typeof(MyTypeDescriptionProvider))]
-    partial class ManWithObser : ObservableObject {
+    partial class ManWithObser : ObservableObject, IForNotify {
         public ManWithObser() {
             mainBrainNeed = new HumanNeeds() { SleepNeed = 8, SunNeed = 2 };
             secondBrainNeed= new HumanNeeds() { SleepNeed=9, SunNeed=10 };
@@ -36,6 +40,10 @@ namespace TestingPropGridFromEremexControl.Model {
         [property: AttributeForAddExpand]
         [property: Category("SecondBrain")]
         public HumanNeeds secondBrainNeed;
+
+        public void ForceOnPropChange(string propertyName) {
+            OnPropertyChanged(propertyName);
+        }
     }
 
     [TypeDescriptionProvider(typeof(MyTypeDescriptionProvider))]

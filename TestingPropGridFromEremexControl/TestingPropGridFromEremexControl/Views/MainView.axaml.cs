@@ -5,5 +5,6 @@ namespace TestingPropGridFromEremexControl.Views {
         public MainView() {
             InitializeComponent();
         }
+
     }
 }
