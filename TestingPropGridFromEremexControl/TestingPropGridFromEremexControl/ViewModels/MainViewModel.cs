@@ -8,6 +8,8 @@ using System.Threading;
 using TestingPropGridFromEremexControl.Model;
 using System.Collections.Generic;
 using System.Collections;
+using TestingPropGridFromEremexControl.ViewModels.CustomProperties;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace TestingPropGridFromEremexControl.ViewModels {
     partial class MainViewModel : ViewModelBase {
@@ -29,14 +31,15 @@ namespace TestingPropGridFromEremexControl.ViewModels {
         List<ManWithObser> listOfObser = new List<ManWithObser>();
         List<ManWithoutObser> listOfWithoutObser = new List<ManWithoutObser>();
 
-        const int countOfObjects = 5;
+        const int countOfObjects = 2;
 
         public MainViewModel() {
             for (int i = 0; i < countOfObjects; i++) {
                 listOfObser.Add(new ManWithObser() { HaveName = true, Name = "With obs" });
                 listOfWithoutObser.Add(new ManWithoutObser() { HaveName = true, Name = "Without obs" });
             }
-
+            listOfObser[0].MainBrainNeed =new HumanNeeds() { SunNeed = 0, SleepNeed = 8 };
+            listOfWithoutObser[0].MainBrainNeed = new HumanNeeds() { SunNeed = 0, SleepNeed = 8 };
             OnUseObservableObjectChanged(useObservableObject);
 
             //Поток чтобы точно проверить что меняются свойства, не зависимо Observable или нет.
@@ -94,24 +97,23 @@ namespace TestingPropGridFromEremexControl.ViewModels {
                 return null;
 
             var firstObject = SelectedObjects.First();
-            List<PropertyInfo> myProperties = [.. firstObject.GetType().GetProperties()];
+
+
+            List<PropertyDescriptor> myProperties = new List<PropertyDescriptor>();
+            myProperties.AddRange(TypeDescriptor.GetProperties(firstObject).Cast<PropertyDescriptor>());
 
             foreach (var o in SelectedObjects.Skip(1)) {
-                var p = o.GetType().GetProperties();
+                var p = TypeDescriptor.GetProperties(firstObject).Cast<PropertyDescriptor>();
                 myProperties = myProperties.IntersectBy(p.Select(n => n.Name), x => x.Name).ToList();
             }
 
             var list = new List<object>();
             foreach (var p in myProperties) {
-                if(p.PropertyType == typeof(HumanNeeds)) {
-                    list.Add(new HumanNeedsRowViewModel() { FieldName = p.Name });
-                    continue;
-                }
-                string? DisplayName = p.GetCustomAttributes(typeof(DisplayNameAttribute)).Cast<DisplayNameAttribute>().FirstOrDefault()?.DisplayName;
+                string? DisplayName = (p.Attributes[typeof(DisplayNameAttribute)] as DisplayNameAttribute)?.DisplayName;
                 if (DisplayName == null)
                     DisplayName = p.Name;
 
-                var Allowed = p.GetCustomAttributes(typeof(AllowedByProp)).Cast<AllowedByProp>().FirstOrDefault();
+                var Allowed = (p.Attributes[typeof(AllowedByProp)] as AllowedByProp);
 
                 if (Allowed == null)
                     list.Add(new DefaultRowViewModel(null, null) { FieldName = p.Name, Caption = DisplayName, ReadOnly = false });
@@ -138,7 +140,7 @@ namespace TestingPropGridFromEremexControl.ViewModels {
 
     public class DefaultRowViewModel : ObservableObject {
 
-        public DefaultRowViewModel(ObservableObject? model, PropertyInfo? propForAllow) {
+        public DefaultRowViewModel(ObservableObject? model, PropertyDescriptor? propForAllow) {
             _model = model;
             _propForAllow = propForAllow;
             if(model !=null)
@@ -161,7 +163,8 @@ namespace TestingPropGridFromEremexControl.ViewModels {
 
         private ObservableObject? _model;
 
-        private PropertyInfo? _propForAllow;
+        private PropertyDescriptor? _propForAllow;
+
 
         // The path to a target object's property.
         public required string FieldName { get; set; }

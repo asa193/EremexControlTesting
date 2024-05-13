@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace TestingPropGridFromEremexControl.Model {
-    partial class HumanNeeds:ObservableObject {
+    public partial class HumanNeeds:ObservableObject {
         [ObservableProperty]
         float sleepNeed;
 
