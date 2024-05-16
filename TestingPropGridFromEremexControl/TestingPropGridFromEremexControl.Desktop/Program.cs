@@ -16,7 +16,6 @@ namespace TestingPropGridFromEremexControl.Desktop {
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
                 .WithInterFont()
-                .LogToTrace()
-                .UseReactiveUI();
+                .LogToTrace();
     }
 }

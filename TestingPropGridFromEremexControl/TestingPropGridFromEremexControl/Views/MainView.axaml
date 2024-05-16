@@ -44,6 +44,7 @@
             AutoGenerateRows="False"
             Background="{DynamicResource Fill/Neutral/Primary/Enabled}"
             BorderThickness="1"
+            PropertyChanged="PropertyGridControl_PropertyChanged"
             RowsSource="{Binding MyRowSource}"
             SelectedObjects="{Binding SelectedObjects}"
             UseModernAppearance="True">

@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Eremex.AvaloniaUI.Controls.PropertyGrid;
 
 namespace TestingPropGridFromEremexControl.Views {
     public partial class MainView : UserControl {
@@ -6,5 +7,10 @@ namespace TestingPropGridFromEremexControl.Views {
             InitializeComponent();
         }
 
+        private void PropertyGridControl_PropertyChanged(object? sender, Avalonia.AvaloniaPropertyChangedEventArgs e) {
+            if(e.Property == PropertyGridControl.RowsSourceProperty) {
+                propertyGrid.FocusedRow = null;
+            }
+        }
     }
 }
