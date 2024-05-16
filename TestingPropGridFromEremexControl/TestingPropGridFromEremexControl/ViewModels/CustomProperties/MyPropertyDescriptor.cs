@@ -52,8 +52,8 @@ namespace TestingPropGridFromEremexControl.ViewModels.CustomProperties {
                 objectForSetValue = p.GetValue(component);
             }
             _p.SetValue(objectForSetValue, value);
-            if (component is IForNotify notify)
-                notify.ForceOnPropChange(Name);
+            //if (component is IForNotify notify)
+            //    notify.ForceOnPropChange(Name);
         }
 
         public override bool ShouldSerializeValue(object component) {

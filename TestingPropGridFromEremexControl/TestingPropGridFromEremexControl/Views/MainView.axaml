@@ -33,9 +33,9 @@
     <Grid ColumnDefinitions="*, *, *">
         <Border Grid.ColumnSpan="3" Background="{DynamicResource Fill/Neutral/Secondary/Enabled}" />
         <StackPanel Grid.Column="0">
-            <TextBlock Text="Place for Name:" />
-            <TextBox Text="{Binding TestingName}" />
-            <CheckBox Content="Observable object" IsChecked="{Binding UseObservableObject}" />
+            <CheckBox Content="Elipse" IsChecked="{Binding ShowElipse}" />
+            <CheckBox Content="Rectangle" IsChecked="{Binding ShowRectangle}" />
+            <CheckBox Content="Image" IsChecked="{Binding ShowImage}" />
         </StackPanel>
         <mxpg:PropertyGridControl
             x:Name="propertyGrid"
@@ -67,17 +67,6 @@
         <Border
             Grid.Column="3"
             BorderBrush="{DynamicResource Outline/Neutral/Transparent/Medium}"
-            BorderThickness="1,0">
-            <StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="current name: " />
-                    <TextBlock Text="{Binding CurrentName}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="current readonly: " />
-                    <TextBlock Text="{Binding CurrentReadOnly}" />
-                </StackPanel>
-            </StackPanel>
-        </Border>
+            BorderThickness="1,0" />
     </Grid>
 </UserControl>

@@ -19,14 +19,14 @@ namespace TestingPropGridFromEremexControl.ViewModels.CustomProperties {
 
             foreach (PropertyDescriptor des in def) {
                 var newDes = new MyPropertyDescriptor(des,new List<MyPropertyDescriptor>());
-                var descr = des.Attributes[typeof(AttributeForAddExpand)] as AttributeForAddExpand;
-                if (descr != null) {
-                    var a = des?.GetChildProperties(attributes);
-                    foreach(PropertyDescriptor p in a) {
-                        NewDescr.Add(new MyPropertyDescriptor(p, new List<MyPropertyDescriptor>() { newDes }) );
-                    }
-                }
-                else
+                //var descr = des.Attributes[typeof(AttributeForAddExpand)] as AttributeForAddExpand;
+                //if (descr != null) {
+                //    var a = des?.GetChildProperties(attributes);
+                //    foreach(PropertyDescriptor p in a) {
+                //        NewDescr.Add(new MyPropertyDescriptor(p, new List<MyPropertyDescriptor>() { newDes }) );
+                //    }
+                //}
+                //else
                     NewDescr.Add(newDes);
             }
             return new PropertyDescriptorCollection(NewDescr.ToArray());

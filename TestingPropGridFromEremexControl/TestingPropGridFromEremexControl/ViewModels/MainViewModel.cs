@@ -26,71 +26,54 @@ namespace TestingPropGridFromEremexControl.ViewModels {
         object[] selectedObjects = [];
 
         [ObservableProperty]
-        bool useObservableObject;
+        bool showImage;
 
-        List<ManWithObser> listOfObser = new List<ManWithObser>();
-        List<ManWithoutObser> listOfWithoutObser = new List<ManWithoutObser>();
+        [ObservableProperty]
+        bool showRectangle;
+
+        [ObservableProperty]
+        bool showElipse;
+
+        List<BasePrim> _primList = new List<BasePrim> {
+            new CRectangle(),new CRectangle(),
+            new CElipse(),new CElipse(),
+            new CImage(), new CImage()};
 
         const int countOfObjects = 2;
 
         public MainViewModel() {
-            for (int i = 0; i < countOfObjects; i++) {
-                listOfObser.Add(new ManWithObser() { HaveName = true, Name = "With obs" });
-                listOfWithoutObser.Add(new ManWithoutObser() { HaveName = true, Name = "Without obs" });
-            }
-            listOfObser[0].MainBrainNeed =new HumanNeeds() { SunNeed = 0, SleepNeed = 8 };
-            listOfWithoutObser[0].MainBrainNeed = new HumanNeeds() { SunNeed = 0, SleepNeed = 8 };
-            OnUseObservableObjectChanged(useObservableObject);
-
-            //Поток чтобы точно проверить что меняются свойства, не зависимо Observable или нет.
-            Thread b = new Thread(Timer);
-            b.IsBackground = true;
-            b.Start();
         }
 
-        partial void OnUseObservableObjectChanged(bool value) {
-            object[] newSelectedObjects;
-            if (value)
-                newSelectedObjects = listOfObser.ToArray();
-            else
-                newSelectedObjects = listOfWithoutObser.ToArray();
+        partial void OnShowRectangleChanged(bool value) {
+            UpdateSelectedPrims();
+        }
+
+        partial void OnShowElipseChanged(bool value) {
+            UpdateSelectedPrims();
+        }
+
+        partial void OnShowImageChanged(bool value) {
+            UpdateSelectedPrims();
+        }
+
+        private void UpdateSelectedPrims() {
+            List<BasePrim> newSelectedObjects =new List<BasePrim>();
+            foreach(var prim in _primList) {
+                if (prim is CImage && ShowImage) {
+                    newSelectedObjects.Add(prim);
+                }else if(prim is CRectangle && ShowRectangle) {
+                    newSelectedObjects.Add(prim);
+                }else if(prim is CElipse && ShowElipse) { 
+                    newSelectedObjects.Add(prim);}
+            }
 
             SelectedObjects = null;
             MyRowSource = GetMyRowSource(newSelectedObjects);
-            SelectedObjects = newSelectedObjects;
-        }
-
-        partial void OnTestingNameChanged(string value) {
-            switch (SelectedObjects?[0]) {
-                case ManWithObser man:
-                    man.Name = value;
-                    break;
-                case ManWithoutObser manWithout:
-                    manWithout.Name = value;
-                    break;
-            }
-        }
-
-        private void Timer() {
-            while (true) {
-                switch (SelectedObjects?[0]) {
-                    case ManWithObser man:
-                        CurrentName = man.Name;
-                        CurrentReadOnly = man.HaveName;
-                        break;
-                    case ManWithoutObser manWithout:
-                        CurrentName = manWithout.Name;
-                        CurrentReadOnly = manWithout.HaveName;
-                        break;
-                }
-                System.Threading.Thread.Sleep(100);
-            }
+            SelectedObjects = newSelectedObjects.ToArray();
         }
 
         [ObservableProperty]
         public IEnumerable myRowSource;
-
-
 
         public IEnumerable GetMyRowSource(IEnumerable<object> SelectedObjects) {
             if (SelectedObjects.Count() < 1)
@@ -112,13 +95,7 @@ namespace TestingPropGridFromEremexControl.ViewModels {
                 string? DisplayName = (p.Attributes[typeof(DisplayNameAttribute)] as DisplayNameAttribute)?.DisplayName;
                 if (DisplayName == null)
                     DisplayName = p.Name;
-
-                var Allowed = (p.Attributes[typeof(AllowedByProp)] as AllowedByProp);
-
-                if (Allowed == null)
-                    list.Add(new DefaultRowViewModel(null, null) { FieldName = p.Name, Caption = DisplayName, ReadOnly = false });
-                else
-                    list.Add(new DefaultRowViewModel(firstObject as ObservableObject, myProperties.Find(p => p.Name == Allowed.PropName)) { FieldName = p.Name, Caption = DisplayName });
+                list.Add(new DefaultRowViewModel(null, null) { FieldName = p.Name, Caption = DisplayName, ReadOnly = false });
             }
             return list;
         }
