@@ -12,6 +12,7 @@ namespace TestingPropGridFromEremexControl.Model {
         FillSettings _fillSettings;
 
         [ObservableProperty]
-        int width;
+        int lpmPerPixel;
+
     }
 }
