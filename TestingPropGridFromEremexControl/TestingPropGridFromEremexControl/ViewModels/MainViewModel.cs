@@ -86,7 +86,7 @@ namespace TestingPropGridFromEremexControl.ViewModels {
             myProperties.AddRange(TypeDescriptor.GetProperties(firstObject).Cast<PropertyDescriptor>());
 
             foreach (var o in SelectedObjects.Skip(1)) {
-                var p = TypeDescriptor.GetProperties(firstObject).Cast<PropertyDescriptor>();
+                var p = TypeDescriptor.GetProperties(o).Cast<PropertyDescriptor>();
                 myProperties = myProperties.IntersectBy(p.Select(n => n.Name), x => x.Name).ToList();
             }
 
