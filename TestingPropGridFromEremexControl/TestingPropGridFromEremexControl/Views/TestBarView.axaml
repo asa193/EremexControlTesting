@@ -1,0 +1,18 @@
+<UserControl
+    x:Class="TestingPropGridFromEremexControl.Views.TestBarView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mxb="clr-namespace:Eremex.AvaloniaUI.Controls.Bars;assembly=Eremex.Avalonia.Controls"
+    Width="60"
+    Height="300"
+    Background="Green"
+    mc:Ignorable="d">
+    <mxb:ToolbarContainerControl DockType="Left">
+        <mxb:Toolbar ShowCustomizationButton="False" ToolbarName="TreeList Control Left">
+            <mxb:ToolbarButtonItem Category="Objects" Header="Add Object" />
+            <mxb:ToolbarButtonItem Category="Objects" Header="Delete Object" />
+        </mxb:Toolbar>
+    </mxb:ToolbarContainerControl>
+</UserControl>

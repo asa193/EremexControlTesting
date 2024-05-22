@@ -42,7 +42,10 @@ namespace TestingPropGridFromEremexControl.ViewModels {
         const int countOfObjects = 2;
 
         public MainViewModel() {
+            TestBar = new TestBarViewModel();
         }
+
+        public TestBarViewModel TestBar { get; }
 
         partial void OnShowRectangleChanged(bool value) {
             UpdateSelectedPrims();

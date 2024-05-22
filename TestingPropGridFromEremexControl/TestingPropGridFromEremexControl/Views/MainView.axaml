@@ -6,9 +6,11 @@
     xmlns:local="using:TestingPropGridFromEremexControl.ViewModels"
     xmlns:m="clr-namespace:TestingPropGridFromEremexControl.Model"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mxb="clr-namespace:Eremex.AvaloniaUI.Controls.Bars;assembly=Eremex.Avalonia.Controls"
     xmlns:mxc="clr-namespace:Eremex.AvaloniaUI.Controls.Common;assembly=Eremex.Avalonia.Controls"
     xmlns:mxe="clr-namespace:Eremex.AvaloniaUI.Controls.Editors;assembly=Eremex.Avalonia.Controls"
     xmlns:mxpg="clr-namespace:Eremex.AvaloniaUI.Controls.PropertyGrid;assembly=Eremex.Avalonia.Controls"
+    xmlns:views="using:TestingPropGridFromEremexControl.Views"
     xmlns:vm="clr-namespace:TestingPropGridFromEremexControl.ViewModels"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -29,45 +31,18 @@
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
-
-    <Grid ColumnDefinitions="*, *, *">
-        <Border Grid.ColumnSpan="3" Background="{DynamicResource Fill/Neutral/Secondary/Enabled}" />
-        <StackPanel Grid.Column="0">
-            <CheckBox Content="Elipse" IsChecked="{Binding ShowElipse}" />
-            <CheckBox Content="Rectangle" IsChecked="{Binding ShowRectangle}" />
-            <CheckBox Content="Image" IsChecked="{Binding ShowImage}" />
-        </StackPanel>
-        <mxpg:PropertyGridControl
-            x:Name="propertyGrid"
-            Grid.Column="1"
-            Margin="16"
-            AutoGenerateRows="False"
-            Background="{DynamicResource Fill/Neutral/Primary/Enabled}"
-            BorderThickness="1"
-            PropertyChanged="PropertyGridControl_PropertyChanged"
-            RowsSource="{Binding MyRowSource}"
-            SelectedObjects="{Binding SelectedObjects}"
-            UseModernAppearance="True">
-            <mxpg:PropertyGridControl.RowsDataTemplates>
-                <DataTemplates>
-                    <DataTemplate DataType="local:CategoryRowViewModel">
-                        <mxpg:PropertyGridCategoryRow Caption="{Binding Path=Caption}" RowsSource="{Binding Path=Items}" />
-                    </DataTemplate>
-                    <DataTemplate DataType="local:DefaultRowViewModel">
-                        <mxpg:PropertyGridRow
-                            Caption="{Binding Path=Caption}"
-                            FieldName="{Binding Path=FieldName}"
-                            ReadOnly="{Binding Path=ReadOnly}" />
-                    </DataTemplate>
-                    <DataTemplate DataType="local:HumanNeedsRowViewModel">
-                        <mxpg:PropertyGridRow FieldName="{Binding Path=FieldName}" RowTemplate="{DynamicResource ResourceKey=humanNeedsEditor}" />
-                    </DataTemplate>
-                </DataTemplates>
-            </mxpg:PropertyGridControl.RowsDataTemplates>
-        </mxpg:PropertyGridControl>
-        <Border
-            Grid.Column="3"
-            BorderBrush="{DynamicResource Outline/Neutral/Transparent/Medium}"
-            BorderThickness="1,0" />
-    </Grid>
+    <mxb:ToolbarManager IsWindowManager="True">
+        <Grid ColumnDefinitions="80, 20, 80,20,80">
+            <Panel Background="Orange" />
+            <mxb:ToolbarContainerControl Grid.Column="1" DockType="Left">
+                <mxb:Toolbar ShowCustomizationButton="False" ToolbarName="TreeList Control Left">
+                    <mxb:ToolbarButtonItem Category="Objects" Header="Add Object" />
+                    <mxb:ToolbarButtonItem Category="Objects" Header="Delete Object" />
+                </mxb:Toolbar>
+            </mxb:ToolbarContainerControl>
+            <Panel Grid.Column="2" Background="Red" />
+            <views:TestBarView Grid.Column="3" DataContext="{Binding TestBar}" />
+            <Panel Grid.Column="4" Background="Aqua" />
+        </Grid>
+    </mxb:ToolbarManager>
 </UserControl>
