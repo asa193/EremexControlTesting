@@ -21,6 +21,7 @@
         <StackPanel Grid.Column="0">
             <TextBlock Text="Place for Name:" />
             <TextBox Text="{Binding TestingName}" />
+            <Button Command="{Binding SelectNewObjectsCommand}" Content="Normal button"/>
             <CheckBox Content="Observable object" IsChecked="{Binding UseObservableObject}" />
             <mxb:ToolbarContainerControl
                 Grid.Row="1"
