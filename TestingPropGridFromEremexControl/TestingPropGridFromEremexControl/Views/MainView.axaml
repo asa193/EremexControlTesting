@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:TestingPropGridFromEremexControl.ViewModels"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mxb="clr-namespace:Eremex.AvaloniaUI.Controls.Bars;assembly=Eremex.Avalonia.Controls"
     xmlns:mxc="clr-namespace:Eremex.AvaloniaUI.Controls.Common;assembly=Eremex.Avalonia.Controls"
     xmlns:mxe="clr-namespace:Eremex.AvaloniaUI.Controls.Editors;assembly=Eremex.Avalonia.Controls"
     xmlns:mxpg="clr-namespace:Eremex.AvaloniaUI.Controls.PropertyGrid;assembly=Eremex.Avalonia.Controls"
@@ -21,6 +22,17 @@
             <TextBlock Text="Place for Name:" />
             <TextBox Text="{Binding TestingName}" />
             <CheckBox Content="Observable object" IsChecked="{Binding UseObservableObject}" />
+            <mxb:ToolbarContainerControl
+                Grid.Row="1"
+                Grid.Column="0"
+                DockType="Top">
+                <mxb:Toolbar ShowCustomizationButton="False" ToolbarName="TreeList Control Left">
+                    <mxb:ToolbarButtonItem
+                        Category="Objects"
+                        Command="{Binding SelectNewObjectsCommand}"
+                        Header="Not observable" />
+                </mxb:Toolbar>
+            </mxb:ToolbarContainerControl>
         </StackPanel>
         <mxpg:PropertyGridControl
             x:Name="propertyGrid"

@@ -8,6 +8,7 @@ using System.Threading;
 using TestingPropGridFromEremexControl.Model;
 using System.Collections.Generic;
 using System.Collections;
+using CommunityToolkit.Mvvm.Input;
 
 namespace TestingPropGridFromEremexControl.ViewModels {
     partial class MainViewModel : ViewModelBase {
@@ -45,6 +46,15 @@ namespace TestingPropGridFromEremexControl.ViewModels {
             b.Start();
         }
 
+        [RelayCommand]
+        private void SelectNewObjects() {
+            bool currentIsObs = SelectedObjects?.FirstOrDefault() is ObservableObject;
+            OnUseObservableObjectChanged(!currentIsObs);
+        }
+
+        [ObservableProperty]
+        string _buttonName;
+
         partial void OnUseObservableObjectChanged(bool value) {
             object[] newSelectedObjects;
             if (value)
@@ -55,6 +65,8 @@ namespace TestingPropGridFromEremexControl.ViewModels {
             SelectedObjects = null;
             MyRowSource = GetMyRowSource(newSelectedObjects);
             SelectedObjects = newSelectedObjects;
+
+            ButtonName = value ? "Observable" : "Not observable";
         }
 
         partial void OnTestingNameChanged(string value) {
