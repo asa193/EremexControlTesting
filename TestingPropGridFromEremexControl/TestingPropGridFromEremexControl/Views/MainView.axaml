@@ -5,9 +5,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:TestingPropGridFromEremexControl.ViewModels"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mxb="clr-namespace:Eremex.AvaloniaUI.Controls.Bars;assembly=Eremex.Avalonia.Controls"
     xmlns:mxc="clr-namespace:Eremex.AvaloniaUI.Controls.Common;assembly=Eremex.Avalonia.Controls"
     xmlns:mxe="clr-namespace:Eremex.AvaloniaUI.Controls.Editors;assembly=Eremex.Avalonia.Controls"
     xmlns:mxpg="clr-namespace:Eremex.AvaloniaUI.Controls.PropertyGrid;assembly=Eremex.Avalonia.Controls"
+    xmlns:mxtl="clr-namespace:Eremex.AvaloniaUI.Controls.TreeList;assembly=Eremex.Avalonia.Controls"
     xmlns:vm="clr-namespace:TestingPropGridFromEremexControl.ViewModels"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -20,30 +22,31 @@
         <StackPanel Grid.Column="0">
             <TextBlock Text="Place for Name:" />
             <TextBox Text="{Binding TestingName}" />
+            <Button Command="{Binding SelectAllWithAddRange}" Content="AddRange" />
+            <Button Command="{Binding SelectAllWithNewCol}" Content="New col" />
         </StackPanel>
-        <mxpg:PropertyGridControl
-            x:Name="propertyGrid"
+        <mxtl:TreeListControl
+            Grid.Row="1"
             Grid.Column="1"
-            Margin="16"
-            Background="{DynamicResource Fill/Neutral/Primary/Enabled}"
-            BorderThickness="1"
-            RowsSource="{Binding MyRowSource}"
-            SelectedObjects="{Binding SelectedObjects}"
-            UseModernAppearance="True">
-            <mxpg:PropertyGridControl.RowsDataTemplates>
-                <DataTemplates>
-                    <DataTemplate DataType="local:CategoryRowViewModel">
-                        <mxpg:PropertyGridCategoryRow Caption="{Binding Path=Caption}" RowsSource="{Binding Path=Items}" />
-                    </DataTemplate>
-                    <DataTemplate DataType="local:DefaultRowViewModel">
-                        <mxpg:PropertyGridRow
-                            Caption="{Binding Path=Caption}"
-                            FieldName="{Binding Path=FieldName}"
-                            ReadOnly="{Binding Path=ReadOnly}" />
-                    </DataTemplate>
-                </DataTemplates>
-            </mxpg:PropertyGridControl.RowsDataTemplates>
-        </mxpg:PropertyGridControl>
+            MaxWidth="200"
+            AllowColumnMoving="False"
+            AllowColumnResizing="False"
+            AllowEditing="False"
+            AllowSorting="False"
+            ChildrenFieldName="Subordinates"
+            HasChildrenFieldName="HasChildren"
+            ItemsSource="{Binding Nodes}"
+            SelectedItems="{Binding SelectedNodes}"
+            SelectionMode="Multiple"
+            ShowColumnHeaders="False">
+            <mxtl:TreeListControl.Columns>
+                <mxtl:TreeListColumn
+                    Name="colName"
+                    Width="*"
+                    FieldName="Name"
+                    Header="Name" />
+            </mxtl:TreeListControl.Columns>
+        </mxtl:TreeListControl>
         <Border
             Grid.Column="3"
             BorderBrush="{DynamicResource Outline/Neutral/Transparent/Medium}"
