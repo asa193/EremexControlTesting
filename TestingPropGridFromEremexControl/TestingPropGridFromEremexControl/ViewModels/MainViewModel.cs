@@ -31,7 +31,7 @@ namespace TestingPropGridFromEremexControl.ViewModels {
 
         public MainViewModel() {
             List<object> list = new List<object>();
-            while (list.Count < 100000) {
+            while (list.Count < 10) {
                 list.Add(new ManWithObser() { HaveName = true, Name = "With obs" });
                 //list.Add(new ManWithoutObser() { HaveName = true, Name = "Without obs" });
             }
