@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:TestingPropGridFromEremexControl.ViewModels"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mx="clr-namespace:Eremex.AvaloniaUI.Controls;assembly=Eremex.Avalonia.Controls"
     xmlns:mxb="clr-namespace:Eremex.AvaloniaUI.Controls.Bars;assembly=Eremex.Avalonia.Controls"
     xmlns:mxc="clr-namespace:Eremex.AvaloniaUI.Controls.Common;assembly=Eremex.Avalonia.Controls"
     xmlns:mxe="clr-namespace:Eremex.AvaloniaUI.Controls.Editors;assembly=Eremex.Avalonia.Controls"
@@ -28,24 +29,49 @@
         <mxtl:TreeListControl
             Grid.Row="1"
             Grid.Column="1"
-            MaxWidth="200"
+            MaxWidth="250"
             AllowColumnMoving="False"
             AllowColumnResizing="False"
-            AllowEditing="False"
+            AllowEditing="True"
             AllowSorting="False"
             ChildrenFieldName="Subordinates"
             HasChildrenFieldName="HasChildren"
             ItemsSource="{Binding Nodes}"
             SelectedItems="{Binding SelectedNodes}"
             SelectionMode="Multiple"
-            ShowColumnHeaders="False">
+            ShowColumnHeaders="True">
             <mxtl:TreeListControl.Columns>
                 <mxtl:TreeListColumn
                     Name="colName"
                     Width="*"
                     FieldName="Name"
                     Header="Name" />
+                <mxtl:TreeListColumn
+                    Name="OnVacation"
+                    Width="*"
+                    FieldName="OnVacation"
+                    Header="OnVacation" />
             </mxtl:TreeListControl.Columns>
+            <mxtl:TreeListControl.Styles>
+                <Style Selector="mxtl|TreeListRowControl">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <Binding x:CompileBindings="False" Path="OnVacation">
+                                <Binding.Converter>
+                                    <mx:BoolToObjectConverter>
+                                        <mx:BoolToObjectConverter.TrueValue>
+                                            <SolidColorBrush Color="Red" />
+                                        </mx:BoolToObjectConverter.TrueValue>
+                                        <mx:BoolToObjectConverter.TrueValue>
+                                            <SolidColorBrush Color="Black" />
+                                        </mx:BoolToObjectConverter.TrueValue>
+                                    </mx:BoolToObjectConverter>
+                                </Binding.Converter>
+                            </Binding>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </mxtl:TreeListControl.Styles>
         </mxtl:TreeListControl>
         <Border
             Grid.Column="3"

@@ -18,6 +18,12 @@ namespace TestingPropGridFromEremexControl.Model {
 
         [ObservableProperty]
         public string emptyBox;
+
+        [ObservableProperty]
+        private bool _hasChildren;
+
+        [ObservableProperty]
+        private bool _onVacation;
     }
 
     public class ManWithoutObser {
