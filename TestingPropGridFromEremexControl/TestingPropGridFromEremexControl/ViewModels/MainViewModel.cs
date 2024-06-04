@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using TestingPropGridFromEremexControl.Model;
+using Eremex.AvaloniaUI.Controls.Common;
 
 namespace TestingPropGridFromEremexControl.ViewModels {
     partial class MainViewModel : ViewModelBase {
@@ -24,10 +25,10 @@ namespace TestingPropGridFromEremexControl.ViewModels {
         [ObservableProperty]
         object[] selectedObjects = [];
 
-        public ObservableRangeCollection<object> Nodes { get; set; } = [];
+        public LockableObservableCollection<object> Nodes { get; set; } = [];
 
         [ObservableProperty]
-        private ObservableRangeCollection<object> _selectedNodes = [];
+        private LockableObservableCollection<object> _selectedNodes = [];
 
         public MainViewModel() {
             List<object> list = new List<object>();
@@ -45,13 +46,14 @@ namespace TestingPropGridFromEremexControl.ViewModels {
         }
 
         public void SelectAllWithNewCol() {
-            SelectedNodes = new ObservableRangeCollection<object>(Nodes);
+            SelectedNodes = new LockableObservableCollection<object>(Nodes);
         }
 
         public void SelectAllWithAddRange() {
-
+            SelectedNodes.BeginUpdate();
             SelectedNodes.Clear();
             SelectedNodes.AddRange(Nodes);
+            SelectedNodes.EndUpdate();
         }
     }
 
